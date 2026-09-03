@@ -98,6 +98,32 @@ select:focus-visible { outline: 2px solid currentColor; outline-offset: 1px; }
 .result .subject { font-weight: 700; }
 .result .teachers, .result .class { color: var(--muted); font-size: 13px; }
 .result .empty { color: var(--muted); }
+button.week-toggle {
+  font: inherit; font-size: 13px; font-weight: 700; text-transform: none;
+  letter-spacing: normal; padding: 9px 12px; border-radius: 8px; cursor: pointer;
+  border: 1px solid var(--border); background: transparent; width: fit-content;
+}
+.class-block button.week-toggle { color: var(--accent-class); border-color: var(--accent-class); }
+.teacher-block button.week-toggle { color: var(--accent-teacher); border-color: var(--accent-teacher); }
+.week-grid-wrap { display: none; overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); }
+table.week-grid { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+table.week-grid th {
+  padding: 7px 5px; text-align: center; border-bottom: 1px solid var(--border);
+  font-weight: 700; color: var(--muted); font-size: 11px; white-space: nowrap;
+  background: var(--paper);
+}
+table.week-grid td {
+  padding: 6px 5px; border-bottom: 1px solid var(--border); vertical-align: top;
+  text-align: center; min-width: 76px;
+}
+table.week-grid tr:last-child td { border-bottom: none; }
+table.week-grid td.hour-cell {
+  font-weight: 700; background: var(--paper); white-space: nowrap;
+  font-variant-numeric: tabular-nums; min-width: auto;
+}
+.week-grid .lesson + .lesson { margin-top: 5px; padding-top: 5px; border-top: 1px dashed var(--border); }
+.week-grid .lesson .subject { font-weight: 700; }
+.week-grid .lesson .who { color: var(--muted); font-size: 11px; }
 .footer {
   text-align: center; font-size: 12px; color: var(--muted); margin-top: 4px;
   font-variant-numeric: tabular-nums;
@@ -125,6 +151,8 @@ select:focus-visible { outline: 2px solid currentColor; outline-offset: 1px; }
       <select id="classHour"><option value="">בחר/י שעה</option></select>
     </label>
     <div class="result" id="classResult"><span class="empty">בחר/י כיתה, יום ושעה</span></div>
+    <button class="week-toggle" type="button" id="classWeekToggle" style="display:none;">הצג מערכת שבועית מלאה</button>
+    <div class="week-grid-wrap" id="classWeekWrap"></div>
   </fieldset>
 
   <fieldset class="teacher-block">
@@ -139,6 +167,8 @@ select:focus-visible { outline: 2px solid currentColor; outline-offset: 1px; }
       <select id="teacherHour"><option value="">בחר/י שעה</option></select>
     </label>
     <div class="result" id="teacherResult"><span class="empty">בחר/י מורה, יום ושעה</span></div>
+    <button class="week-toggle" type="button" id="teacherWeekToggle" style="display:none;">הצג מערכת שבועית מלאה</button>
+    <div class="week-grid-wrap" id="teacherWeekWrap"></div>
   </fieldset>
 
   <div class="footer">עודכן לאחרונה: 03.09.2026</div>
@@ -212,6 +242,60 @@ for (const id of ["classSelect", "classDay", "classHour"]) {
 for (const id of ["teacherSelect", "teacherDay", "teacherHour"]) {
   document.getElementById(id).addEventListener("change", renderTeacherResult);
 }
+
+function renderWeekGrid(rows, whoField) {
+  if (!rows.length) {
+    return '<div style="padding:14px;color:var(--muted);font-size:13px;">אין נתונים.</div>';
+  }
+  const rowHours = [...new Set(rows.map(r => r.hour))].sort((a, b) => a - b);
+  let html = '<table class="week-grid"><thead><tr><th>שעה</th>';
+  for (const d of DAYS) html += `<th>${d}</th>`;
+  html += '</tr></thead><tbody>';
+  for (const h of rowHours) {
+    html += `<tr><td class="hour-cell">${h}</td>`;
+    for (const d of DAYS) {
+      const cell = rows.filter(r => r.day === d && r.hour === h);
+      if (!cell.length) { html += '<td></td>'; continue; }
+      html += '<td>' + cell.map(r =>
+        `<div class="lesson"><div class="subject">${r.subject}</div><div class="who">${r[whoField]}</div></div>`
+      ).join('') + '</td>';
+    }
+    html += '</tr>';
+  }
+  html += '</tbody></table>';
+  return html;
+}
+
+function setupWeekToggle(selectId, toggleId, wrapId, filterFn, whoField) {
+  const select = document.getElementById(selectId);
+  const toggle = document.getElementById(toggleId);
+  const wrap = document.getElementById(wrapId);
+
+  function refresh() {
+    const value = select.value;
+    wrap.style.display = "none";
+    toggle.textContent = "הצג מערכת שבועית מלאה";
+    if (!value) {
+      toggle.style.display = "none";
+      wrap.innerHTML = "";
+      return;
+    }
+    toggle.style.display = "block";
+    wrap.innerHTML = renderWeekGrid(filterFn(value), whoField);
+  }
+
+  toggle.addEventListener("click", () => {
+    const show = wrap.style.display !== "block";
+    wrap.style.display = show ? "block" : "none";
+    toggle.textContent = show ? "הסתר מערכת שבועית" : "הצג מערכת שבועית מלאה";
+  });
+  select.addEventListener("change", refresh);
+}
+
+setupWeekToggle("classSelect", "classWeekToggle", "classWeekWrap",
+  cls => SCHEDULE.filter(r => r.class === cls), "teachers");
+setupWeekToggle("teacherSelect", "teacherWeekToggle", "teacherWeekWrap",
+  teacher => SCHEDULE.filter(r => r.teachers.split(",").map(t => t.trim()).includes(teacher)), "class");
 </script>
 </body>
 </html>
