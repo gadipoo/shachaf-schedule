@@ -124,6 +124,56 @@ table.week-grid td.hour-cell {
 .week-grid .lesson + .lesson { margin-top: 5px; padding-top: 5px; border-top: 1px dashed var(--border); }
 .week-grid .lesson .subject { font-weight: 700; }
 .week-grid .lesson .who { color: var(--muted); font-size: 11px; }
+/* בחירת שעות מרובה - רק במצב "שכבה שלמה". צ'יפים ולא <select multiple>:
+   בחירה מרובה בסלקט בנייד דורשת לחיצה ארוכה/מקש עזר ולא מתגלה מעצמה */
+.hours-title {
+  font-size: 12.5px; font-weight: 600; color: var(--muted);
+  text-transform: uppercase; letter-spacing: .03em; margin-bottom: 7px;
+}
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+/* "כל היום" בשורה נפרדת מעל המספרים - אחרת הוא רחב, דוחף את הספרות
+   וגורם לשורה שנייה מכוערת עם 6 ו-7 לבד */
+.chips-break { flex-basis: 100%; height: 0; }
+.chip-all { font-weight: 700; }
+.chip {
+  display: inline-flex; flex-direction: row; align-items: center; gap: 6px;
+  cursor: pointer; border: 1px solid var(--border); border-radius: 999px;
+  padding: 7px 13px; font-size: 14.5px; font-weight: 600; color: var(--ink);
+  background: var(--paper); text-transform: none; letter-spacing: normal;
+  user-select: none;
+}
+.chip input { accent-color: var(--accent-class); margin: 0; }
+.chip.on {
+  background: var(--accent-class-soft); border-color: var(--accent-class);
+  color: var(--accent-class);
+}
+.grade-wrap { display: none; }
+.grade-scroll { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); }
+table.grade-grid { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+table.grade-grid th {
+  padding: 7px 5px; text-align: center; border-bottom: 1px solid var(--border);
+  font-weight: 700; font-size: 12px; white-space: nowrap; background: var(--paper);
+  color: var(--accent-class);
+}
+table.grade-grid th:first-child { color: var(--muted); }
+table.grade-grid td {
+  padding: 6px 5px; border-bottom: 1px solid var(--border); vertical-align: top;
+  text-align: center; min-width: 72px;
+}
+table.grade-grid tr:last-child td { border-bottom: none; }
+table.grade-grid td.hour-cell {
+  font-weight: 700; background: var(--paper); white-space: nowrap;
+  font-variant-numeric: tabular-nums; min-width: auto;
+}
+.grade-grid .lesson + .lesson { margin-top: 5px; padding-top: 5px; border-top: 1px dashed var(--border); }
+.grade-grid .lesson .subject { font-weight: 700; }
+.grade-grid .lesson .who { color: var(--muted); font-size: 11px; }
+.grade-grid .none { color: var(--muted); }
+.grade-empty {
+  padding: 12px 14px; color: var(--muted); font-size: 14px;
+  border: 1px dashed var(--border); border-radius: 10px;
+  background: var(--accent-class-soft);
+}
 .footer {
   text-align: center; font-size: 12px; color: var(--muted); margin-top: 4px;
   font-variant-numeric: tabular-nums;
@@ -136,7 +186,7 @@ table.week-grid td.hour-cell {
     <h1>מערכת שעות אקשטיין</h1>
   </div>
 
-  <fieldset class="subs-block"><legend>החלפות מורים</legend><div class="subs-date">יום ד, 23.09.2026</div><div class="subs-scroll"><table class="subs-table"><thead><tr><th>מורה נעדר</th><th>מורה מחליף</th><th>כיתה</th><th>שעה</th></tr></thead><tbody><tr><td>אור דרייר</td><td>אידית שנדל</td><td>ז3</td><td>1</td></tr><tr><td>אור דרייר</td><td>קורין מריאני</td><td>ז4</td><td>3</td></tr><tr><td>אור דרייר</td><td>אידית שנדל</td><td>ז2</td><td>5</td></tr><tr><td>אור דרייר</td><td>גלית גוזלן</td><td>-</td><td>6</td></tr><tr><td>אור דרייר</td><td>בוצינסקי רונן</td><td>ז1</td><td>7</td></tr><tr><td>דוחא אל קדסא</td><td>גלית גוזלן</td><td>-</td><td>6</td></tr><tr><td>יעל קונטנט</td><td>שמעון דדיה</td><td>ח1, ח2</td><td>4</td></tr><tr><td>כגן אלמוג</td><td>בוצינסקי רונן</td><td>ז1, ז2</td><td>2</td></tr><tr><td>כגן אלמוג</td><td>אביטל פוקס</td><td>ח3, ח4</td><td>3</td></tr><tr><td>כגן אלמוג</td><td>ורד סולומון</td><td>ח1, ח2</td><td>4</td></tr><tr><td>כגן אלמוג</td><td>דנה אמיתי</td><td>ט1, ט2</td><td>5</td></tr><tr><td>כרמל הופמן</td><td>גלית גוזלן</td><td>ח3</td><td>5</td></tr><tr><td>ליטל הרשקוביץ</td><td>יעל קונטנט</td><td>ח2</td><td>2</td></tr><tr><td>נועה דוידי</td><td>לירז מדר</td><td>ח4</td><td>2</td></tr><tr><td>נועה דוידי</td><td>אור בן דוד</td><td>ט1, ט2</td><td>7</td></tr><tr><td>נטע קונין</td><td>כפיר זיברי</td><td>י1...י4</td><td>3</td></tr><tr><td>נטע קונין</td><td>אור כנרתי צבר</td><td>י1...י4</td><td>4</td></tr><tr><td>עדי זיו</td><td>יעל גפן</td><td>יא3</td><td>3</td></tr><tr><td>עדי זיו</td><td>קורין מריאני</td><td>יא2</td><td>4</td></tr><tr><td>עדי זיו</td><td>ורד סולומון</td><td>י1</td><td>5</td></tr><tr><td>עדי זיו</td><td>מתן גבע</td><td>יא3</td><td>6</td></tr><tr><td>עדי זיו</td><td>שיר שלומי</td><td>יא1</td><td>7</td></tr><tr><td>קרן ברסון</td><td>דורון פסטרנק מורגנשטרן</td><td>ח3</td><td>2</td></tr><tr><td>קרן ברסון</td><td>דורון פסטרנק מורגנשטרן</td><td>ח2</td><td>3</td></tr><tr><td>קרן ברסון</td><td>גבי מורג</td><td>ח2</td><td>5</td></tr></tbody></table></div></fieldset>
+  <fieldset class="subs-block"><legend>החלפות מורים</legend><div class="subs-date">יום ד, 23.09.2026</div><div class="subs-scroll"><table class="subs-table"><thead><tr><th>מורה נעדר</th><th>מורה מחליף</th><th>כיתה</th><th>שעה</th></tr></thead><tbody><tr><td>אור דרייר</td><td>אידית שנדל</td><td>ז3</td><td>1</td></tr><tr><td>אור דרייר</td><td>קורין מריאני</td><td>ז4</td><td>3</td></tr><tr><td>אור דרייר</td><td>אידית שנדל</td><td>ז2</td><td>5</td></tr><tr><td>אור דרייר</td><td>גלית גוזלן</td><td>-</td><td>6</td></tr><tr><td>אור דרייר</td><td>בוצינסקי רונן</td><td>ז1</td><td>7</td></tr><tr><td>יעל קונטנט</td><td>שמעון דדיה</td><td>ח1, ח2</td><td>4</td></tr><tr><td>כגן אלמוג</td><td>בוצינסקי רונן</td><td>ז1, ז2</td><td>2</td></tr><tr><td>כגן אלמוג</td><td>אביטל פוקס</td><td>ח3, ח4</td><td>3</td></tr><tr><td>כגן אלמוג</td><td>ורד סולומון</td><td>ח1, ח2</td><td>4</td></tr><tr><td>כגן אלמוג</td><td>דנה אמיתי</td><td>ט1, ט2</td><td>5</td></tr><tr><td>כרמל הופמן</td><td>גלית גוזלן</td><td>ח3</td><td>5</td></tr><tr><td>ליטל הרשקוביץ</td><td>יעל קונטנט</td><td>ח2</td><td>2</td></tr><tr><td>נועה דוידי</td><td>לירז מדר</td><td>ח4</td><td>2</td></tr><tr><td>נועה דוידי</td><td>אור בן דוד</td><td>ט1, ט2</td><td>7</td></tr><tr><td>נטע קונין</td><td>כפיר זיברי</td><td>י1...י4</td><td>3</td></tr><tr><td>נטע קונין</td><td>אור כנרתי צבר</td><td>י1...י4</td><td>4</td></tr><tr><td>עדי זיו</td><td>יעל גפן</td><td>יא3</td><td>3</td></tr><tr><td>עדי זיו</td><td>קורין מריאני</td><td>יא2</td><td>4</td></tr><tr><td>עדי זיו</td><td>ורד סולומון</td><td>י1</td><td>5</td></tr><tr><td>עדי זיו</td><td>מתן גבע</td><td>יא3</td><td>6</td></tr><tr><td>עדי זיו</td><td>שיר שלומי</td><td>יא1</td><td>7</td></tr><tr><td>קרן ברסון</td><td>דורון פסטרנק מורגנשטרן</td><td>ח3</td><td>2</td></tr><tr><td>קרן ברסון</td><td>דורון פסטרנק מורגנשטרן</td><td>ח2</td><td>3</td></tr><tr><td>קרן ברסון</td><td>גבי מורג</td><td>ח2</td><td>5</td></tr></tbody></table></div></fieldset>
 
   <fieldset class="class-block">
     <legend>חיפוש לפי כיתה</legend>
@@ -146,10 +196,18 @@ table.week-grid td.hour-cell {
     <label>יום
       <select id="classDay"><option value="">בחר/י יום</option></select>
     </label>
-    <label>שעה
+    <label id="classHourLabel">שעה
       <select id="classHour"><option value="">בחר/י שעה</option></select>
     </label>
+    <div id="classHoursWrap" style="display:none;">
+      <div class="hours-title">שעות</div>
+      <div class="chips" id="classHoursChips">
+        <label class="chip chip-all"><input type="checkbox" id="classHourAll"><span>כל היום</span></label>
+        <div class="chips-break"></div>
+      </div>
+    </div>
     <div class="result" id="classResult"><span class="empty">בחר/י כיתה, יום ושעה</span></div>
+    <div class="grade-wrap" id="classGradeWrap"></div>
     <button class="week-toggle" type="button" id="classWeekToggle" style="display:none;">הצג מערכת שבועית מלאה</button>
     <div class="week-grid-wrap" id="classWeekWrap"></div>
   </fieldset>
@@ -194,7 +252,38 @@ const hours = [...new Set(SCHEDULE.map(r => r.hour))].sort((a, b) => a - b);
 const teacherHours = [...new Set(TEACHER_SCHEDULE.map(r => r.hour))].sort((a, b) => a - b);
 const teacherNames = [...new Set(TEACHER_SCHEDULE.map(r => r.teacher))].sort();
 
-fillSelect(document.getElementById("classSelect"), classes);
+// שכבה = השם בלי הספרה בסוף. לא לפי האות הראשונה: "י", "יא" ו-"יב"
+// מתחילות באותה אות, וכל חיתוך לפי אות היה מאחד אותן לשכבה אחת
+const GRADE_OF = c => String(c).replace(/[0-9]+$/, "").trim();
+const GRADE_ORDER = ["ז", "ח", "ט", "י", "יא", "יב"];
+const grades = [...new Set(classes.map(GRADE_OF))]
+  .filter(g => g)
+  .sort((a, b) => GRADE_ORDER.indexOf(a) - GRADE_ORDER.indexOf(b));
+const classesOfGrade = g => classes.filter(c => GRADE_OF(c) === g);
+const GRADE_PREFIX = "grade:";
+const isGradeValue = v => String(v).startsWith(GRADE_PREFIX);
+
+const classSelect = document.getElementById("classSelect");
+(function fillClassSelect() {
+  const gradeGroup = document.createElement("optgroup");
+  gradeGroup.label = "שכבה שלמה";
+  for (const g of grades) {
+    const opt = document.createElement("option");
+    opt.value = GRADE_PREFIX + g;
+    opt.textContent = "שכבה " + g;
+    gradeGroup.appendChild(opt);
+  }
+  classSelect.appendChild(gradeGroup);
+  const classGroup = document.createElement("optgroup");
+  classGroup.label = "כיתה בודדת";
+  for (const c of classes) {
+    const opt = document.createElement("option");
+    opt.value = c; opt.textContent = c;
+    classGroup.appendChild(opt);
+  }
+  classSelect.appendChild(classGroup);
+})();
+
 fillSelect(document.getElementById("classDay"), DAYS);
 fillSelect(document.getElementById("classHour"), hours);
 fillSelect(document.getElementById("teacherSelect"), teacherNames);
@@ -299,6 +388,115 @@ setupWeekToggle("classSelect", "classWeekToggle", "classWeekWrap",
   cls => SCHEDULE.filter(r => r.class === cls), "teachers");
 setupWeekToggle("teacherSelect", "teacherWeekToggle", "teacherWeekWrap",
   teacher => TEACHER_SCHEDULE.filter(r => r.teacher === teacher), "classes");
+
+/* ---------- מצב "שכבה שלמה" ---------- */
+
+const hoursChips = document.getElementById("classHoursChips");
+const gradeWrap = document.getElementById("classGradeWrap");
+
+(function buildHourChips() {
+  for (const h of hours) {
+    const chip = document.createElement("label");
+    chip.className = "chip";
+    chip.innerHTML = '<input type="checkbox" class="hour-chip" value="' + h +
+                     '"><span>' + h + '</span>';
+    hoursChips.appendChild(chip);
+  }
+  hoursChips.addEventListener("change", ev => {
+    if (ev.target.id === "classHourAll" && ev.target.checked) {
+      // "כל היום" מבטל בחירה נקודתית, ולהפך - שתי הדרכים לא מתערבבות
+      hoursChips.querySelectorAll("input.hour-chip").forEach(i => { i.checked = false; });
+    } else if (ev.target.classList.contains("hour-chip") && ev.target.checked) {
+      document.getElementById("classHourAll").checked = false;
+    }
+    paintChips();
+    renderGradeView();
+  });
+})();
+
+function paintChips() {
+  // סימון ויזואלי ב-JS ולא ב-CSS :has() - הדף נפתח גם בדפדפנים ישנים
+  // יותר בטלפונים של המורים, ושם :has() לא נתמך
+  hoursChips.querySelectorAll("label.chip").forEach(chip => {
+    const box = chip.querySelector("input");
+    chip.classList.toggle("on", !!(box && box.checked));
+  });
+}
+
+function hoursOfDay(grade, day) {
+  const found = [...new Set(SCHEDULE
+    .filter(r => GRADE_OF(r.class) === grade && r.day === day)
+    .map(r => Number(r.hour)))].sort((a, b) => a - b);
+  return found.length ? found : hours.map(Number);
+}
+
+function selectedHours(grade, day) {
+  const all = document.getElementById("classHourAll");
+  if (all && all.checked) return hoursOfDay(grade, day);
+  return [...hoursChips.querySelectorAll("input.hour-chip:checked")]
+    .map(i => Number(i.value)).sort((a, b) => a - b);
+}
+
+function renderGradeView() {
+  const value = classSelect.value;
+  if (!isGradeValue(value)) {
+    gradeWrap.style.display = "none";
+    gradeWrap.innerHTML = "";
+    return;
+  }
+  const grade = value.slice(GRADE_PREFIX.length);
+  const day = document.getElementById("classDay").value;
+  gradeWrap.style.display = "block";
+  if (!day) {
+    gradeWrap.innerHTML = '<div class="grade-empty">בחר/י יום</div>';
+    return;
+  }
+  const chosen = selectedHours(grade, day);
+  if (!chosen.length) {
+    gradeWrap.innerHTML =
+      '<div class="grade-empty">בחר/י שעה אחת או יותר, או "כל היום"</div>';
+    return;
+  }
+  const cols = classesOfGrade(grade);
+  let html = '<div class="grade-scroll"><table class="grade-grid"><thead><tr><th>שעה</th>';
+  for (const c of cols) html += `<th>${c}</th>`;
+  html += '</tr></thead><tbody>';
+  for (const h of chosen) {
+    html += `<tr><td class="hour-cell">${h}</td>`;
+    for (const c of cols) {
+      const cell = SCHEDULE.filter(
+        r => r.class === c && r.day === day && Number(r.hour) === h);
+      html += '<td>' + (cell.length
+        ? cell.map(r => `<div class="lesson"><div class="subject">${r.subject}</div>` +
+            (r.teachers ? `<div class="who">${r.teachers}</div>` : '') + '</div>').join('')
+        : '<span class="none">—</span>') + '</td>';
+    }
+    html += '</tr>';
+  }
+  html += '</tbody></table></div>';
+  gradeWrap.innerHTML = html;
+}
+
+function updateClassMode() {
+  const gradeMode = isGradeValue(classSelect.value);
+  document.getElementById("classHourLabel").style.display = gradeMode ? "none" : "flex";
+  document.getElementById("classHoursWrap").style.display = gradeMode ? "block" : "none";
+  document.getElementById("classResult").style.display = gradeMode ? "none" : "block";
+  if (gradeMode) {
+    // המערכת השבועית של כיתה בודדת לא רלוונטית לשכבה שלמה
+    document.getElementById("classWeekToggle").style.display = "none";
+    document.getElementById("classWeekWrap").style.display = "none";
+  }
+  renderGradeView();
+}
+
+// אחרי setupWeekToggle בכוונה: שני המאזינים יושבים על אותו select,
+// והם רצים לפי סדר הרישום - כך ש-updateClassMode מכבה את כפתור
+// המערכת השבועית אחרי ש-setupWeekToggle הדליק אותו
+classSelect.addEventListener("change", updateClassMode);
+document.getElementById("classDay").addEventListener("change", renderGradeView);
+paintChips();
+updateClassMode();
 </script>
 </body>
 </html>
