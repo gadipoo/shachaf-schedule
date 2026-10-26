@@ -180,11 +180,23 @@ table.grade-grid td.hour-cell {
   font-variant-numeric: tabular-nums;
 }
 
-:root { --accent-cal: #46558a; --accent-cal-soft: #e6e9f3; --exam: #a8433a; --exam-soft: #f6e4e1; --event: #2f6f5e; --event-soft: #e2efe9; }
+:root { --accent-cal: #46558a; --accent-cal-soft: #e6e9f3; --exam: #a8433a; --exam-soft: #f6e4e1; --event: #2f6f5e; --event-soft: #e2efe9;
+        --accent-list: #7a4a86; --accent-list-soft: #f1e8f4; }
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) { --accent-cal: #a9b6e6; --accent-cal-soft: #262b3d; --exam: #eb9a91; --exam-soft: #3a2522; --event: #7fc4ac; --event-soft: #1f3029; }
+  :root:not([data-theme="light"]) { --accent-cal: #a9b6e6; --accent-cal-soft: #262b3d; --exam: #eb9a91; --exam-soft: #3a2522; --event: #7fc4ac; --event-soft: #1f3029;
+                                    --accent-list: #d2a8de; --accent-list-soft: #2e2433; }
 }
-:root[data-theme="dark"] { --accent-cal: #a9b6e6; --accent-cal-soft: #262b3d; --exam: #eb9a91; --exam-soft: #3a2522; --event: #7fc4ac; --event-soft: #1f3029; }
+:root[data-theme="dark"] { --accent-cal: #a9b6e6; --accent-cal-soft: #262b3d; --exam: #eb9a91; --exam-soft: #3a2522; --event: #7fc4ac; --event-soft: #1f3029;
+                           --accent-list: #d2a8de; --accent-list-soft: #2e2433; }
+/* שני חלקים נפרדים בעין (גד, 26.10.2026): הלוח החודשי בכחול, הרשימה המלאה
+   בסגול - כל אחד בכרטיס משלו, עם פס, רקע עדין וכותרת בצבע שלו */
+fieldset.cal-block { background: color-mix(in srgb, var(--accent-cal-soft) 45%, var(--panel)); }
+fieldset.list-card { border-inline-start: 4px solid var(--accent-list); align-self: center;
+  width: max(100%, min(940px, calc(100vw - 48px))); max-width: none;
+  background: color-mix(in srgb, var(--accent-list-soft) 55%, var(--panel)); }
+.list-card legend { color: var(--accent-list); }
+.list-card .seg .chip input { accent-color: var(--accent-list); }
+.list-card .seg .chip.on { background: var(--accent-list-soft); border-color: var(--accent-list); color: var(--accent-list); }
 /* הלוח רחב מהכרטיס (480px) במחשב - חודש שלם לא נכנס ברוחב של טלפון.
    בטלפון הוא פשוט ממלא את הרוחב כמו כל שאר הבלוקים */
 fieldset.cal-block { border-inline-start: 4px solid var(--accent-cal); align-self: center;
@@ -221,14 +233,12 @@ table.cal td.today { box-shadow: inset 0 0 0 2px var(--accent-cal); }
 .cal .it .cls { display: block; font-size: 10.5px; color: var(--muted); font-weight: 700; }
 .cal-empty { padding: 12px 14px; color: var(--muted); font-size: 14px; border: 1px dashed var(--border);
   border-radius: 10px; background: var(--accent-cal-soft); }
-.list-block { display: flex; flex-direction: column; gap: 12px; margin-top: 10px; padding-top: 16px;
-  border-top: 1px solid var(--border); }
-.list-title { font-family: "Frank Ruhl Libre", serif; font-weight: 700; font-size: 16px; color: var(--accent-cal); }
+.list-block { display: flex; flex-direction: column; gap: 12px; }
 .list-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 .list-actions button { font: inherit; font-size: 14px; font-weight: 700; padding: 9px 14px; border-radius: 8px;
-  cursor: pointer; border: 1px solid var(--accent-cal); background: var(--accent-cal); color: var(--panel); }
-.list-actions button.secondary { background: transparent; color: var(--accent-cal); }
-.list-msg { font-size: 13.5px; padding: 10px 12px; border-radius: 8px; background: var(--accent-cal-soft);
+  cursor: pointer; border: 1px solid var(--accent-list); background: var(--accent-list); color: var(--panel); }
+.list-actions button.secondary { background: transparent; color: var(--accent-list); }
+.list-msg { font-size: 13.5px; padding: 10px 12px; border-radius: 8px; background: var(--accent-list-soft);
   color: var(--ink); line-height: 1.6; }
 .list-scroll { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); }
 table.list { width: 100%; border-collapse: collapse; font-size: 13.5px; }
@@ -238,7 +248,8 @@ table.list td { padding: 7px 8px; border-bottom: 1px solid var(--border); vertic
 table.list tr:last-child td { border-bottom: none; }
 table.list td.d { white-space: nowrap; font-variant-numeric: tabular-nums; }
 table.list tr.past td { color: var(--muted); }
-table.list tr.month td { background: var(--paper); font-weight: 700; color: var(--accent-cal); font-size: 12.5px; }
+table.list tr.month td { background: var(--accent-list-soft); font-weight: 700; color: var(--accent-list); font-size: 12.5px; }
+.list-scroll, .cal-scroll { background: var(--panel); }
 .kind-tag { display: inline-block; font-size: 11.5px; font-weight: 700; padding: 1px 7px; border-radius: 999px;
   border: 1px solid; white-space: nowrap; }
 .kind-tag.exam { color: var(--exam); background: var(--exam-soft); }
@@ -318,9 +329,11 @@ table.list tr.month td { background: var(--paper); font-weight: 700; color: var(
     <div class="cal-count" id="calCount"></div>
     <div class="cal-legend"><span class="lg-exam">מבחן</span><span class="lg-event">אירוע</span></div>
     <div id="calBody"></div>
+  </fieldset>
 
+  <fieldset class="list-card">
+    <legend>רשימת כל המבחנים והאירועים</legend>
     <div class="list-block">
-      <div class="list-title">רשימת כל המבחנים והאירועים</div>
       <label>כיתה או שכבה
         <select id="listSelect"><option value="">בחר/י כיתה או שכבה</option></select>
       </label>
