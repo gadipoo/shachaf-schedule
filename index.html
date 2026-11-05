@@ -22,6 +22,8 @@
   --accent-teacher-soft: #f3e9dd;
   --accent-subs: #94433c;
   --accent-subs-soft: #f5e6e3;
+  --accent-reform: #4a5a9a;
+  --accent-reform-soft: #e8ebf5;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -29,6 +31,7 @@
     --border: #3a3d2f; --accent-class: #7fc4ac; --accent-class-soft: #223229;
     --accent-teacher: #e0a465; --accent-teacher-soft: #332619;
     --accent-subs: #e0938c; --accent-subs-soft: #332420;
+    --accent-reform: #9fb0ee; --accent-reform-soft: #23273a;
   }
 }
 :root[data-theme="dark"] {
@@ -36,6 +39,7 @@
   --border: #3a3d2f; --accent-class: #7fc4ac; --accent-class-soft: #223229;
   --accent-teacher: #e0a465; --accent-teacher-soft: #332619;
   --accent-subs: #e0938c; --accent-subs-soft: #332420;
+  --accent-reform: #9fb0ee; --accent-reform-soft: #23273a;
 }
 * { box-sizing: border-box; }
 body {
@@ -57,6 +61,18 @@ fieldset {
 fieldset.class-block { border-inline-start: 4px solid var(--accent-class); }
 fieldset.teacher-block { border-inline-start: 4px solid var(--accent-teacher); }
 fieldset.subs-block { border-inline-start: 4px solid var(--accent-subs); }
+fieldset.reform-block { border-inline-start: 4px solid var(--accent-reform); }
+.reform-block legend { color: var(--accent-reform); }
+.reform-block .result { background: var(--accent-reform-soft); }
+.reform-group + .reform-group { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
+.reform-group h4 { margin: 0 0 6px; font-size: 14px; color: var(--accent-reform); }
+.reform-group h4 .n { color: var(--muted); font-weight: 600; font-size: 12.5px; }
+.reform-names { display: flex; flex-wrap: wrap; gap: 6px; }
+.reform-name {
+  border: 1px solid var(--border); background: var(--panel); border-radius: 999px;
+  padding: 4px 11px; font-size: 13.5px;
+}
+.reform-name small { color: var(--muted); font-size: 11.5px; }
 legend {
   font-family: "Frank Ruhl Libre", serif; font-weight: 700; font-size: 16px;
   padding: 0 6px;
@@ -269,6 +285,19 @@ table.list tr.month td { background: var(--accent-list-soft); font-weight: 700; 
   </div>
 
   <fieldset class="subs-block"><legend>החלפות מורים</legend><div class="subs-date">יום ה, 05.11.2026</div><div class="subs-scroll"><table class="subs-table"><thead><tr><th>מורה נעדר</th><th>מורה מחליף</th><th>כיתה</th><th>שעה</th></tr></thead><tbody><tr><td>אור בן דוד</td><td>גבי מורג</td><td>חינוך גופני ח3, ח4</td><td>5</td></tr><tr><td>אור דרייר</td><td>הירש לירון</td><td>מדעים ח1</td><td>1</td></tr><tr><td>אור דרייר</td><td>בר שמואל לוגסי</td><td>מדעים ח4</td><td>2</td></tr><tr><td>אור דרייר</td><td>לירז מדר</td><td>מדעים ח3</td><td>3</td></tr><tr><td>אור דרייר</td><td>קורין מריאני</td><td>מדעים ז2</td><td>4</td></tr><tr><td>אור דרייר</td><td>נטע קונין</td><td>מדעים ז1</td><td>5</td></tr><tr><td>אור דרייר</td><td>סטפני בר</td><td>מדעים ח2</td><td>6</td></tr><tr><td>דורון פסטרנק מורגנשטרן</td><td>כפיר זיברי</td><td>חינוך ז4</td><td>4</td></tr><tr><td>דורון פסטרנק מורגנשטרן</td><td>יעל קונטנט</td><td>הכיתה כקבוצה ז4</td><td>5</td></tr><tr><td>דורון פסטרנק מורגנשטרן</td><td>אביטל פוקס</td><td>מתמטיקה ז1</td><td>6</td></tr><tr><td>הירש לירון</td><td>אור בן דוד</td><td>תאטרון ח3</td><td>2</td></tr><tr><td>סטפני בר (פינוי מורה)</td><td>כגן אלמוג</td><td>תנ"ך יב1, יב2</td><td>2</td></tr><tr><td>קרן ברסון</td><td>גלית גוזלן</td><td>ספרות ח1</td><td>5</td></tr><tr><td>קרן ברסון</td><td>אידית שנדל</td><td>היסטוריה ח3</td><td>6</td></tr><tr><td>שרון מורגנשטרן</td><td>נועה גבע</td><td>תנ"ך ט1</td><td>1</td></tr><tr><td>שרון מורגנשטרן</td><td>מיכל לביא</td><td>תנ"ך ט2</td><td>4</td></tr><tr><td>שרון מורגנשטרן</td><td>אברהם מלכה</td><td>תנ"ך ח2</td><td>5</td></tr></tbody></table></div></fieldset>
+
+  <!-- מי בשעת רפורמה (גד, 05.11.2026): לפי יום ושעה - מי בשהייה, בפרטני
+       ובתפקיד, מתוך המערכת הקבועה של כל מורה (TEACHER_SCHEDULE) -->
+  <fieldset class="reform-block">
+    <legend>מי בשעת רפורמה</legend>
+    <label>יום
+      <select id="reformDay"><option value="">בחר/י יום</option></select>
+    </label>
+    <label>שעה
+      <select id="reformHour"><option value="">בחר/י שעה</option></select>
+    </label>
+    <div class="result" id="reformResult"><span class="empty">בחר/י יום ושעה</span></div>
+  </fieldset>
 
   <fieldset class="class-block">
     <legend>חיפוש לפי כיתה</legend>
@@ -673,6 +702,66 @@ fillSelect(document.getElementById("classHour"), hours);
 fillSelect(document.getElementById("teacherSelect"), teacherNames);
 fillSelect(document.getElementById("teacherDay"), DAYS);
 fillSelect(document.getElementById("teacherHour"), teacherHours);
+
+// מי בשעת רפורמה: שהייה ("שהייה", "שהייה.בגרות"), פרטני ("פרטני.אופק",
+// "הדרכה.פרטני" - לא "טיפול.פרטני", שזה טיפול של מטפלים) ותפקיד
+// plain = הצורות הרגילות; כל צורה אחרת מוצגת בקטן ליד השם
+const REFORM_GROUPS = [
+  { title: "שהייה", plain: ["שהייה"], test: s => s.startsWith("שהייה") },
+  { title: "פרטני", plain: ["פרטני", "פרטני.אופק"], test: s => s.includes("פרטני") && !s.startsWith("טיפול") },
+  { title: "תפקיד", plain: ["תפקיד"], test: s => s.includes("תפקיד") },
+];
+fillSelect(document.getElementById("reformDay"), DAYS);
+fillSelect(document.getElementById("reformHour"), teacherHours);
+function renderReform() {
+  const day = document.getElementById("reformDay").value;
+  const hour = document.getElementById("reformHour").value;
+  const box = document.getElementById("reformResult");
+  if (!day || !hour) {
+    box.innerHTML = '<span class="empty">בחר/י יום ושעה</span>';
+    return;
+  }
+  const atHour = TEACHER_SCHEDULE.filter(r => r.day === day && String(r.hour) === hour);
+  box.innerHTML = "";
+  let any = false;
+  for (const g of REFORM_GROUPS) {
+    const seen = new Map();
+    for (const r of atHour) {
+      const s = String(r.subject || "").trim();
+      if (g.test(s) && !seen.has(r.teacher)) seen.set(r.teacher, s);
+    }
+    if (!seen.size) continue;
+    any = true;
+    const wrap = document.createElement("div");
+    wrap.className = "reform-group";
+    const h = document.createElement("h4");
+    h.textContent = g.title + " ";
+    const n = document.createElement("span");
+    n.className = "n"; n.textContent = "(" + seen.size + ")";
+    h.appendChild(n);
+    wrap.appendChild(h);
+    const names = document.createElement("div");
+    names.className = "reform-names";
+    for (const [teacher, s] of [...seen.entries()].sort((a, b) => a[0].localeCompare(b[0], "he"))) {
+      const chip = document.createElement("span");
+      chip.className = "reform-name";
+      chip.textContent = teacher;
+      // סוג מיוחד ("שהייה.בגרות", "הדרכה.פרטני") - מוצג בקטן ליד השם
+      const plain = s.replace(/ *[(][^)]*[)] *$/, "");   // בלי "(ת)" / "(פ)" בסוף
+      if (!g.plain.includes(plain)) {
+        const sm = document.createElement("small");
+        sm.textContent = " · " + plain;
+        chip.appendChild(sm);
+      }
+      names.appendChild(chip);
+    }
+    wrap.appendChild(names);
+    box.appendChild(wrap);
+  }
+  if (!any) box.innerHTML = '<span class="empty">אין אף מורה בשעת רפורמה בשעה הזו</span>';
+}
+document.getElementById("reformDay").addEventListener("change", renderReform);
+document.getElementById("reformHour").addEventListener("change", renderReform);
 
 function renderClassResult() {
   const cls = document.getElementById("classSelect").value;
